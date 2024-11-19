@@ -71,3 +71,7 @@ gem "solidus_api", "~> 3.4"
 gem "solidus_sample", "~> 3.4"
 
 gem "solidus_frontend", "~> 4.0", :github => "solidusio/solidus_frontend"
+
+gem "gemini-ai"
+
+gem "ruby-gemini-ai", "~> 0.1.1"
