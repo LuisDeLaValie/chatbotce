@@ -1,13 +1,4 @@
 <div class="question-form">
-  <%= turbo_frame_tag "answer" do %>
-    <p id="answer"></p>  <!-- This will display the answer from Gemini -->
-  <% end %>
-
-  <%= turbo_frame_tag "new_question" do %>
-    <%= form_tag questions_path, method: :post, class: 'question-input' do %>
-      <%= label_tag :question, "Ask your question:" %>
-      <%= text_field_tag "question[question]", nil, placeholder: "Type your question" %>
-      <%= submit_tag "Ask" %>
-    <% end %>
-  <% end %>
+<%= render  "question_form", question_path: main_app.questions_path %>  <!-- Reutilizando el partial del formulario de la pregunta -->
+<%= render partial: "answer", question_path: main_app.questions_path %>  <!-- Reutilizando el partial de la respuesta -->
 </div>

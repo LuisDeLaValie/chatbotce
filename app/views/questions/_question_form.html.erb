@@ -1,0 +1,8 @@
+<%= turbo_frame_tag "new_question" do %>
+  <%= form_tag question_path, method: :post, class: 'question-input' do %>
+    <%= label_tag :question, "Haz tu pregunta:" %>
+    <%= text_field_tag "question[question]", nil, placeholder: "Escribe tu pregunta" %>
+    <%= submit_tag "Preguntar" %>
+  <% end %>
+<% end %>
+  

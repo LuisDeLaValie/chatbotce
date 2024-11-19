@@ -24,12 +24,16 @@ class QuestionsController < ApplicationController
     # Respond with Turbo Stream or HTML (if Turbo Stream fails)
     respond_to do |format|
       format.turbo_stream  # Renders a turbo_stream response
-      format.html { redirect_to questions_path, notice: 'Answer was successfully generated.' }
+      # format.html { redirect_to questions_path, notice: 'Answer was successfully generated.' }
+      format.html { head :no_content }  # Asegurarse de que no haya redirección ni carga completa de la página
     end
 
   rescue => e
     @answer = "Error: #{e.message}"
     Rails.logger.error("Gemini AI Error: #{e.message}")
+    format.turbo_stream  # Asegurarnos de que respondemos con Turbo Stream también en caso de error
+    format.html { head :no_content }  # Evitar redirección en caso de error
+    
   end
 
   private
