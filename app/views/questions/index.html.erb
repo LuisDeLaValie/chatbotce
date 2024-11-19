@@ -4,7 +4,7 @@
   <% end %>
 
   <%= turbo_frame_tag "new_question" do %>
-    <%= form_with url: '/questions', method: :post, class: 'question-input' do %>
+    <%= form_tag questions_path, method: :post, class: 'question-input' do %>
       <%= label_tag :question, "Ask your question:" %>
       <%= text_field_tag "question[question]", nil, placeholder: "Type your question" %>
       <%= submit_tag "Ask" %>

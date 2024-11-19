@@ -33,7 +33,9 @@
 
     </div>
 
-    <%= render 'questions/pregunta' %> <!-- Aquí incluimos el partial -->
+    
+    <%= render 'shared/questions/question_form', question_path: main_app.questions_path%>
+
 
 
   </body>
