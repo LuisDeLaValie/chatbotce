@@ -1,4 +1,6 @@
 <div class="question-form">
-<%= render  "question_form", question_path: main_app.questions_path %>  <!-- Reutilizando el partial del formulario de la pregunta -->
-<%= render partial: "answer", question_path: main_app.questions_path %>  <!-- Reutilizando el partial de la respuesta -->
+    <h1>Chat Bot</h1>
+
+    <%= render  "question_form", question_path: main_app.questions_path %>  <!-- Reutilizando el partial del formulario de la pregunta -->
+    <%= render partial: "answer", question_path: main_app.questions_path %>  <!-- Reutilizando el partial de la respuesta -->
 </div>
