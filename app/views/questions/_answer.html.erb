@@ -1,7 +1,5 @@
 <%= turbo_frame_tag "answer" do %>
-  <div class="response-container">
-
-   
+  <div class="response-container">   
 
    <!-- Mostrar avatar solo si hay respuesta -->
     <% if @answer.present? %>
@@ -12,13 +10,6 @@
     <% end %>
   </div>
 
-
-
-
- 
-
-
-
   <!-- Script para leer la respuesta en voz alta -->
   <script>
     speakAnswer(); // Llama a la función para leer el texto
@@ -27,8 +18,6 @@
 
 <!-- Script para sintetizar la voz -->
 <script>
-
-
 
   function speakAnswer() {
     const answerElement = document.getElementById("answer");

@@ -1,46 +1,76 @@
 <%= turbo_frame_tag "new_question" do %>
-  <%= form_tag question_path, method: :post, class: 'question-input' do %>
+  <%= form_tag question_path, method: :post, class: 'question-input', id: 'question-form' do %>
     <%= label_tag :question, "Haz tu pregunta:" %>
-    <%= text_field_tag id="voice-input" "question[question]", nil, placeholder: "Escribe tu pregunta" %>
-    <%= submit_tag "Preguntar" %>
-     <!-- Botón para iniciar el dictado por voz -->
-    <button id="start-dictation" class="dictation-button">🎙️ Dictar</button>
+
+    <!-- Botón para iniciar dictado -->
+    <button type="button" id="start-dictation" class="dictation-button">🎙️ Dictar</button>
+
+    <!-- Campo de entrada para la pregunta -->
+    <%= text_field_tag "question[question]", nil, placeholder: "Escribe o dicta tu pregunta", id: "question-input" %>
+
+    <!-- Botón de envío -->
+    <%= submit_tag "Preguntar", id: "submit-button" %>
   <% end %>
 <% end %>
-  
+
 <script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const startButton = document.getElementById("start-dictation");
+    const questionInput = document.getElementById("question-input");
+    const submitButton = document.getElementById("submit-button");
 
-  
- document.addEventListener("DOMContentLoaded", () => {
-      const startButton = document.getElementById("start-dictation");
-      const voiceInput = document.getElementById("voice-input");
+    if ("webkitSpeechRecognition" in window) {
+      const recognition = new webkitSpeechRecognition();
+      recognition.lang = "es-MX"; // Idioma español de México
+      recognition.continuous = false; // Solo una frase
+      recognition.interimResults = false; // Mostrar solo resultados finales
 
-      if ("webkitSpeechRecognition" in window) {
-        const recognition = new webkitSpeechRecognition();
-        recognition.lang = "es-MX"; // Configurar el idioma a español de México
-        recognition.continuous = false; // Detenerse después de una frase
-        recognition.interimResults = false; // Mostrar solo resultados finales
+      // Iniciar el dictado cuando se presione el botón
+      startButton.addEventListener("click", () => {
+        recognition.start();
+      });
 
-        // Iniciar el dictado cuando se presione el botón
-        startButton.addEventListener("click", () => {
-          recognition.start();
-        });
+      // Manejar los resultados del dictado
+      recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+        questionInput.value = transcript; // Rellenar el campo con el texto dictado
+        recognition.stop(); // Detener el reconocimiento
+        submitButton.click(); // Simular clic en el botón "Preguntar"
+      };
 
-        // Manejar los resultados del dictado
-        recognition.onresult = (event) => {
-          const transcript = event.results[0][0].transcript;
-          voiceInput.value = transcript; // Mostrar el texto dictado en el textarea
-          recognition.stop(); // Detener el reconocimiento
-        };
-
-        // Manejar errores
-        recognition.onerror = (event) => {
-          console.error("Speech Recognition Error:", event.error);
-        };
-      } else {
-        alert("Tu navegador no soporta reconocimiento de voz. Por favor, usa Chrome.");
-      }
-    });
-
-
+      // Manejar errores
+      recognition.onerror = (event) => {
+        console.error("Error de reconocimiento de voz:", event.error);
+        alert("Ocurrió un error al usar el reconocimiento de voz.");
+      };
+    } else {
+      alert("Tu navegador no soporta reconocimiento de voz. Por favor, usa Chrome.");
+    }
+  });
 </script>
+
+<style>
+  .dictation-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-right: 10px;
+  }
+
+  .dictation-button:hover {
+    background-color: #0056b3;
+  }
+
+  .question-input input {
+    width: calc(100% - 160px);
+    margin-right: 10px;
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+  }
+</style>
