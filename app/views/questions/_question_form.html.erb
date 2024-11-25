@@ -1,8 +1,46 @@
 <%= turbo_frame_tag "new_question" do %>
   <%= form_tag question_path, method: :post, class: 'question-input' do %>
     <%= label_tag :question, "Haz tu pregunta:" %>
-    <%= text_field_tag "question[question]", nil, placeholder: "Escribe tu pregunta" %>
+    <%= text_field_tag id="voice-input" "question[question]", nil, placeholder: "Escribe tu pregunta" %>
     <%= submit_tag "Preguntar" %>
+     <!-- Botón para iniciar el dictado por voz -->
+    <button id="start-dictation" class="dictation-button">🎙️ Dictar</button>
   <% end %>
 <% end %>
   
+<script>
+
+  
+ document.addEventListener("DOMContentLoaded", () => {
+      const startButton = document.getElementById("start-dictation");
+      const voiceInput = document.getElementById("voice-input");
+
+      if ("webkitSpeechRecognition" in window) {
+        const recognition = new webkitSpeechRecognition();
+        recognition.lang = "es-MX"; // Configurar el idioma a español de México
+        recognition.continuous = false; // Detenerse después de una frase
+        recognition.interimResults = false; // Mostrar solo resultados finales
+
+        // Iniciar el dictado cuando se presione el botón
+        startButton.addEventListener("click", () => {
+          recognition.start();
+        });
+
+        // Manejar los resultados del dictado
+        recognition.onresult = (event) => {
+          const transcript = event.results[0][0].transcript;
+          voiceInput.value = transcript; // Mostrar el texto dictado en el textarea
+          recognition.stop(); // Detener el reconocimiento
+        };
+
+        // Manejar errores
+        recognition.onerror = (event) => {
+          console.error("Speech Recognition Error:", event.error);
+        };
+      } else {
+        alert("Tu navegador no soporta reconocimiento de voz. Por favor, usa Chrome.");
+      }
+    });
+
+
+</script>

@@ -1,4 +1,81 @@
 <%= turbo_frame_tag "answer" do %>
-    <p id="answer"><%= @answer %></p>
-  <% end %>
-  
+  <div class="response-container">
+
+   
+
+   <!-- Mostrar avatar solo si hay respuesta -->
+    <% if @answer.present? %>
+      <%= image_tag "ezgif.com-crop (1).gif", alt: "Avatar", class: "avatar-image" %>
+      <p id="answer" class="response-text"><%= @answer %></p>
+    <% else %>
+      <p id="answer" class="response-text" style="display: none;"></p>
+    <% end %>
+  </div>
+
+
+
+
+ 
+
+
+
+  <!-- Script para leer la respuesta en voz alta -->
+  <script>
+    speakAnswer(); // Llama a la función para leer el texto
+  </script>
+<% end %>
+
+<!-- Script para sintetizar la voz -->
+<script>
+
+
+
+  function speakAnswer() {
+    const answerElement = document.getElementById("answer");
+    const text = answerElement ? answerElement.innerText : "";
+    if (text) {
+      const speech = new SpeechSynthesisUtterance(text);
+      speech.lang = "es-MX"; // Idioma: Español México
+      speech.rate = 1;       // Velocidad de la voz
+      speech.pitch = 1;      // Tono de la voz
+      window.speechSynthesis.speak(speech);
+    }
+  }
+</script>
+
+
+<style>
+
+/* Contenedor general de la respuesta */
+.response-container {
+  display: flex;
+  align-items: center;
+  background-color: #f9f9f9; /* Fondo claro */
+  border: 1px solid #ddd;   /* Borde gris claro */
+  border-radius: 8px;       /* Bordes redondeados */
+  padding: 16px;            /* Espaciado interno */
+  margin-top: 16px;         /* Separación superior */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra suave */
+}
+
+/* Imagen de avatar */
+.avatar-image {
+  width: 100px;      /* Ancho de la imagen */
+  height: 100px;     /* Alto de la imagen */
+  border-radius: 50%; /* Forma circular */
+  margin-right: 16px; /* Separación con el texto */
+  border: 2px solid #4CAF50; /* Borde verde */
+  object-fit: cover; /* Ajustar imagen al contenedor */
+}
+
+/* Texto de la respuesta */
+.response-text {
+  font-size: 1.2rem;        /* Tamaño de fuente */
+  color: #333;              /* Color de texto */
+  font-family: 'Arial', sans-serif; /* Fuente */
+  line-height: 1.5;         /* Altura de línea */
+  word-wrap: break-word;    /* Ajustar texto */
+}
+
+
+</style>
